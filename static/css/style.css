@@ -21,18 +21,18 @@
   --shadow: 0 10px 30px -12px rgba(16, 25, 42, 0.22);
 
   /* fluid type scale */
-  --step--1: clamp(0.9rem,  0.85rem + 0.25vw, 1.05rem);
-  --step-0:  clamp(1.15rem, 1.08rem + 0.35vw, 1.32rem);
-  --step-1:  clamp(1.45rem, 1.25rem + 0.85vw, 2.0rem);
-  --step-2:  clamp(1.95rem, 1.55rem + 1.7vw,  3.0rem);
-  --step-3:  clamp(2.5rem,  1.8rem + 3.5vw,   4.6rem);
+  --step--1: clamp(0.63rem, 0.6rem + 0.25vw,  0.74rem);
+  --step-0:  clamp(0.81rem, 0.76rem + 0.35vw, 0.92rem);
+  --step-1:  clamp(1.02rem, 0.88rem + 0.85vw, 1.4rem);
+  --step-2:  clamp(1.37rem, 1.09rem + 1.7vw,  2.1rem);
+  --step-3:  clamp(1.75rem, 1.26rem + 3.5vw,  3.22rem);
 
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-body:    'IBM Plex Sans', system-ui, sans-serif;
   --font-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
 
   --header-h: 60px;
-  --wrap: 1360px;
+  --wrap: 950px;
 }
 
 /* ---------- Reset / base ---------- */
@@ -291,7 +291,7 @@ h1#paper-title .title-sub {
 /* Hero media: figure uses its natural aspect ratio, capped width */
 .hero-media {
   margin: 0 auto;
-  max-width: min(100%, 1000px);
+  max-width: min(100%, 700px);
 }
 .hero-media img,
 .hero-media-video {
