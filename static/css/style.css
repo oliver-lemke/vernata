@@ -1,19 +1,19 @@
 /* ============================================================
-   Vernata project page — style.css
+   Vernata project page: style.css
    Light theme only. Signature = LiDAR depth ramp.
    ============================================================ */
 
 /* ---------- Design tokens ---------- */
 :root {
-  --ink:        #10192A; /* deep slate — primary text */
-  --paper:      #FBFCFD; /* cool white — page surface */
-  --mist:       #5C6B7A; /* slate grey — secondary text, captions */
+  --ink:        #10192A; /* deep slate: primary text */
+  --paper:      #FBFCFD; /* cool white: page surface */
+  --mist:       #5C6B7A; /* slate grey: secondary text, captions */
   --line:       #E4E8EC; /* hairline borders + dividers */
   --card:       #FFFFFF; /* raised surfaces */
 
-  /* depth ramp (near → far) — the signature */
+  /* depth ramp (near to far): the signature */
   --depth-near: #E8B23A; /* amber  */
-  --depth-mid:  #1F8A8C; /* teal — primary interactive accent */
+  --depth-mid:  #1F8A8C; /* teal: primary interactive accent */
   --depth-far:  #3B3170; /* indigo */
   --ramp: linear-gradient(90deg, var(--depth-near), var(--depth-mid), var(--depth-far));
 
@@ -194,11 +194,21 @@ a:hover { text-decoration: none; }
 h1#paper-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--step-3);
   line-height: 1.08;
   letter-spacing: -0.02em;
   margin: 0.25rem 0 0;
   text-wrap: balance;
+}
+h1#paper-title .title-name {
+  display: block;
+  font-size: var(--step-3);
+}
+h1#paper-title .title-sub {
+  display: block;
+  font-size: var(--step-1);
+  font-weight: 600;
+  color: var(--mist);
+  margin-top: 0.4rem;
 }
 
 .authors {
@@ -225,14 +235,27 @@ h1#paper-title {
 }
 .affils sup { color: var(--depth-mid); }
 
+.venue-line {
+  margin: 0 0 1.5rem;
+  text-align: center;
+}
+
 .venue-chip {
+  display: inline-block;
   font-family: var(--font-mono);
-  font-size: var(--step--1);
+  font-size: var(--step-0);
   color: var(--depth-mid);
   border: 1px solid var(--depth-mid);
   border-radius: 999px;
-  padding: 0.2rem 0.7rem;
+  padding: 0.3rem 0.9rem;
   white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.venue-chip:hover,
+.venue-chip:focus-visible {
+  background-color: var(--depth-mid);
+  color: var(--paper);
 }
 
 /* CTA pill buttons */
@@ -265,7 +288,7 @@ h1#paper-title {
 }
 .pill:active { transform: translateY(1px); }
 
-/* Hero media — figure uses its natural aspect ratio, capped width */
+/* Hero media: figure uses its natural aspect ratio, capped width */
 .hero-media {
   margin: 0 auto;
   max-width: min(100%, 760px);

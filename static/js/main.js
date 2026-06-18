@@ -1,5 +1,5 @@
 /* ============================================================
-   Vernata project page — main.js
+   Vernata project page: main.js
    No dependencies. Handles: active-nav, reveals, compare slider,
    inline-video play/pause, copy-bibtex.
    ============================================================ */

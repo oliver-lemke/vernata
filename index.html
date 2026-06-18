@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vernata — Self-Supervised Learning of LiDAR Point Representations</title>
+  <title>🌿 Vernata</title>
   <meta name="description" content="Vernata: self-supervised representation learning for outdoor LiDAR point clouds. Published at IROS 2026.">
   <link rel="canonical" href="https://oliver-lemke.github.io/vernata/">
 
   <!-- Social preview -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Vernata — Self-Supervised Learning of LiDAR Point Representations">
+  <meta property="og:title" content="Vernata: Self-Supervised Learning of LiDAR Point Representations">
   <meta property="og:description" content="Self-supervised representation learning for outdoor LiDAR point clouds. Published at IROS 2026.">
   <meta property="og:url" content="https://oliver-lemke.github.io/vernata/">
   <meta property="og:image" content="https://oliver-lemke.github.io/vernata/static/images/teaser.jpg">
@@ -47,20 +47,25 @@
 
     <!-- ───────────────────────── Hero ───────────────────────── -->
     <section class="hero" aria-labelledby="paper-title">
-      <p class="eyebrow">Self-supervised LiDAR representation learning</p>
-      <h1 id="paper-title">Vernata: Self-Supervised Learning of LiDAR Point Representations</h1>
+      <h1 id="paper-title">
+        <span class="title-name">🌿 Vernata 🌿</span>
+        <span class="title-sub">Self-Supervised Learning of LiDAR Point Representations</span>
+      </h1>
       <div class="ramp-rule" role="presentation"></div>
 
       <p class="authors">
-        <a href="mailto:olemke@ethz.ch">Oliver Lemke</a><sup>1,2</sup>,
-        Alexander Liniger<sup>1</sup>,
-        Abel Gawel<sup>1</sup>,
-        Marco Hutter<sup>1,2</sup>
+        <a href="https://oliver-lemke.com/" target="_blank" rel="noopener">Oliver Lemke</a><sup>1,2</sup>,
+        <a href="https://alexliniger.github.io/" target="_blank" rel="noopener">Alexander Liniger</a><sup>1</sup>,
+        <a href="https://scholar.google.com/citations?user=2Be2mRAAAAAJ&amp;hl=de" target="_blank" rel="noopener">Abel Gawel</a><sup>1</sup>,
+        <a href="https://rsl.ethz.ch/the-lab/people/person-detail.hutter.html" target="_blank" rel="noopener">Marco Hutter</a><sup>1,2</sup>
       </p>
       <p class="affils">
-        <span><sup>1</sup>Robotics and AI Institute</span>
-        <span><sup>2</sup>ETH Zürich</span>
-        <span class="venue-chip">IROS 2026</span>
+        <span><sup>1</sup><a href="https://rai-inst.com/" target="_blank" rel="noopener">Robotics and AI Institute</a></span>
+        <span><sup>2</sup><a href="https://ethz.ch/en.html" target="_blank" rel="noopener">ETH Zürich</a></span>
+      </p>
+      <p class="venue-line">
+        <a class="venue-chip" href="https://2026.ieee-iros.org/"
+           target="_blank" rel="noopener">IROS 2026</a>
       </p>
 
       <nav class="cta-row" aria-label="Paper resources">
@@ -80,14 +85,14 @@
 
       <p class="tagline">
         A multi-modal, multi-teacher self-supervised framework that learns robust point
-        representations from outdoor LiDAR — no labels required.
+        representations from outdoor LiDAR, with no labels required.
       </p>
     </section>
 
     <!-- ───────────────────────── Abstract ───────────────────────── -->
     <section id="abstract" class="section" aria-labelledby="abstract-h">
       <p class="eyebrow">Abstract</p>
-      <h2 id="abstract-h">Self-supervised representations for outdoor LiDAR</h2>
+      <h2 id="abstract-h">Self-supervised representations for LiDAR</h2>
       <div class="ramp-rule" role="presentation"></div>
       <div class="prose">
         <p>
@@ -169,7 +174,7 @@
           <strong>memory bank</strong> concatenates a FIFO queue of prototype scores before
           Sinkhorn–Knopp, decoupling normalization from batch size and stabilizing training on
           a 4-GPU budget. <strong>Cross-modal distillation</strong> backprojects
-          high-resolution 2D features — DINOv2 patches upsampled with LoftUp — onto each point,
+          high-resolution 2D features (DINOv2 patches upsampled with LoftUp) onto each point,
           guiding the student with fine-grained semantics that hold up at range.
         </p>
       </div>
@@ -196,7 +201,7 @@
         <input class="compare-range" type="range" min="0" max="100" value="50"
                aria-label="Reveal slider: drag to compare Sonata, finetuned (left) with Vernata (right)">
         <figcaption class="caption">
-          <strong>Visualization of PCA Features in LiDAR Scenes.</strong> Drag to compare —
+          <strong>Visualization of PCA Features in LiDAR Scenes.</strong> Drag to compare
           Sonata finetuned (left) against our approach (right). We visualize the principal
           components of point representations produced by Sonata finetuned on LiDAR datasets, as
           well as our approach. Sonata struggles with separation between distinct semantic
@@ -212,7 +217,7 @@
         <p>
           We evaluate via linear probing for semantic segmentation. Against both the original
           Sonata checkpoint (frozen, ScanNet-pretrained) and a Sonata variant self-supervised
-          finetuned on each target dataset, Vernata improves consistently across all metrics —
+          finetuned on each target dataset, Vernata improves consistently across all metrics:
           <strong>+5.9 mIoU (+12.1%)</strong> on TartanGround and
           <strong>+7.3 mIoU (+14.7%)</strong> on Waymo over the finetuned baseline.
         </p>
