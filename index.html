@@ -12,7 +12,7 @@
   <meta property="og:title" content="Vernata — Self-Supervised Learning of LiDAR Point Representations">
   <meta property="og:description" content="DINO-style self-supervised representation learning for outdoor LiDAR point clouds. IROS 2026 submission.">
   <meta property="og:url" content="https://oliver-lemke.github.io/vernata/">
-  <meta property="og:image" content="https://oliver-lemke.github.io/vernata/static/images/teaser.svg">
+  <meta property="og:image" content="https://oliver-lemke.github.io/vernata/static/images/teaser.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- Fonts -->
@@ -52,14 +52,14 @@
       <div class="ramp-rule" role="presentation"></div>
 
       <p class="authors">
-        <a href="#">Oliver Lemke</a><sup>1</sup>,
-        <a href="#">Author Two</a><sup>1</sup>,
-        <a href="#">Author Three</a><sup>2</sup>,
-        <a href="#">Author Four</a><sup>1</sup>
+        <a href="mailto:olemke@ethz.ch">Oliver Lemke</a><sup>1,2</sup>,
+        Alexander Liniger<sup>1</sup>,
+        Abel Gawel<sup>1</sup>,
+        Marco Hutter<sup>1,2</sup>
       </p>
       <p class="affils">
-        <span><sup>1</sup>ETH Zürich</span>
-        <span><sup>2</sup>Affiliation Two</span>
+        <span><sup>1</sup>Robotics and AI Institute</span>
+        <span><sup>2</sup>ETH Zürich</span>
         <span class="venue-chip">IROS 2026 · under review</span>
       </p>
 
@@ -82,43 +82,52 @@
       </nav>
 
       <figure class="hero-media">
-        <img src="./static/images/teaser.svg"
-             alt="Range-colored LiDAR point cloud of an outdoor scene, scanned in concentric rings outward from a central sensor; nearby points are amber, mid-range teal, and far points indigo."
-             width="1280" height="720" loading="lazy">
-        <!-- Swap in a looping clip when available:
-        <video class="hero-media-video" autoplay muted playsinline loop preload="none"
-               poster="./static/images/teaser.svg" width="1280" height="720">
-          <source src="./static/videos/teaser.mp4" type="video/mp4">
-        </video>
-        -->
+        <img src="./static/images/teaser.jpg"
+             alt="PCA visualization of learned point features on GrandTour and TartanGround LiDAR scenes. Top: RGB reference. Middle: finetuned Sonata, with smeared, range-dependent features. Bottom: Vernata (ours), with sharper semantic separation and consistent features across the scan's density variations."
+             width="1600" height="1571" loading="lazy">
         <figcaption class="caption">
-          Vernata learns point representations directly from raw outdoor LiDAR — colored here by range.
+          PCA of learned point features. Sonata (middle) smears across classes and drifts with
+          range; Vernata (bottom) keeps semantics distinct and consistent across density.
         </figcaption>
       </figure>
 
       <p class="tagline">
-        A DINO-style student–teacher objective that learns transferable point features from
-        unlabeled outdoor LiDAR, with no manual annotation.
+        A multi-modal, multi-teacher self-supervised framework that learns robust point
+        representations from outdoor LiDAR — no labels required.
       </p>
     </section>
 
     <!-- ───────────────────────── Abstract ───────────────────────── -->
     <section id="abstract" class="section" aria-labelledby="abstract-h">
       <p class="eyebrow">Abstract</p>
-      <h2 id="abstract-h">Learning from raw scans</h2>
+      <h2 id="abstract-h">Self-supervised representations for outdoor LiDAR</h2>
       <div class="ramp-rule" role="presentation"></div>
       <div class="prose">
         <p>
-          <em>Placeholder abstract.</em> Outdoor LiDAR perception still leans heavily on
-          large labeled datasets, which are costly to collect and annotate. Vernata adapts
-          self-distillation with no labels (DINO) to sparse, range-varying point clouds,
-          producing point-level representations that transfer across downstream tasks.
+          LiDAR serves as a primary sensing modality for robots operating in outdoor
+          environments. However, the performance of deep learning models in this domain is
+          severely limited by the scarcity of labeled data, a direct result of the high cost
+          of 3D annotation. Self-supervised learning addresses this scarcity by learning
+          general-purpose features from unlabeled data. In this work, we present a multi-modal,
+          multi-teacher distillation framework for self-supervised learning on outdoor LiDAR
+          point clouds.
         </p>
         <p>
-          We pair a student and a momentum teacher over two augmented views of the same scan,
-          and train the student to match the teacher's distribution. The resulting features
-          improve label efficiency on semantic segmentation and detection, and remain robust
-          across sensors and scenes. Replace this text with the final abstract.
+          Building upon the Sonata architecture, we introduce Vernata, consisting of three
+          extensions: sparse view augmentation to improve robustness against varying point
+          densities, a memory bank mechanism to stabilize resource-constrained training, and
+          cross-modal distillation utilizing dense, high-resolution 2D image features to enable
+          fine-grained semantic guidance. We evaluate our method on the GrandTour,
+          TartanGround, and Waymo datasets, as well as data collected from our own robotic
+          platforms.
+        </p>
+        <p>
+          Our experiments demonstrate a significant performance improvement over Sonata
+          baselines, yielding mIoU scores of 54.7 on TartanGround (+5.9 points, +12.1%) and
+          57.1 on Waymo (+7.3 points, +14.7%). Finally, we show that the self-supervised
+          approach maintains strong performance even in reduced-modality settings (lacking
+          color or normals), achieving competitive mIoU scores of 49.4 and 50.2 on the
+          respective datasets.
         </p>
       </div>
     </section>
@@ -142,28 +151,34 @@
     <!-- ───────────────────────── Method ───────────────────────── -->
     <section id="method" class="section" aria-labelledby="method-h">
       <p class="eyebrow">Method</p>
-      <h2 id="method-h">A student–teacher objective for LiDAR</h2>
+      <h2 id="method-h">A multi-modal, multi-teacher framework</h2>
       <div class="ramp-rule" role="presentation"></div>
       <figure class="method-figure">
-        <img src="./static/images/method.svg"
-             alt="Vernata pipeline: a LiDAR scan is split into two augmented views; a student network and an EMA-updated teacher each encode one view and produce a softmax distribution; the student is trained with a cross-entropy self-distillation loss while the teacher branch uses centering and stop-gradient."
-             width="1100" height="460" loading="lazy">
+        <img src="./static/images/architecture.png"
+             alt="Vernata framework overview. Two teachers process global views of the scene: a 3D teacher (top) using a PTv3 encoder updated by EMA, and a frozen 2D teacher (bottom) producing DINOv2 features upsampled with LoftUp and backprojected into the point cloud. The student receives masked, local, and sparse-subsampled views; it is aligned to the 3D teacher via cross-entropy loss and to the 2D teacher via cosine similarity. The base Sonata framework is highlighted in gray."
+             width="1800" height="1336" loading="lazy">
         <figcaption class="caption">
-          Two augmented views of a scan feed a student and a momentum teacher; the student is
-          distilled toward the teacher's centered output. Replace with the final figure.
+          Two teachers anchor the model: an EMA-updated 3D teacher (PTv3) and a frozen 2D
+          teacher (DINOv2 + LoftUp). The student aligns to the 3D teacher via cross-entropy and
+          to the 2D teacher via cosine similarity. Base Sonata framework shown in gray.
         </figcaption>
       </figure>
       <div class="prose">
         <p>
-          <em>Placeholder method text.</em> Given a single LiDAR sweep, we sample two augmented
-          views via geometric and point-dropout transforms. The student encoder is trained by
-          gradient descent; the teacher is an exponential moving average of the student, with a
-          stop-gradient and output centering to prevent collapse.
+          Vernata extends Sonata's DINOv2-style self-distillation to outdoor LiDAR. A student
+          and an EMA teacher operate over views of each scan; targets are formed by mapping
+          teacher features to learnable prototypes and normalizing with the Sinkhorn–Knopp
+          algorithm, and the student minimizes the cross-entropy to these assignments.
         </p>
         <p>
-          The objective is a cross-entropy between the student and teacher distributions over a
-          learned prototype set. Describe the encoder backbone, augmentation policy, and any
-          LiDAR-specific design choices here.
+          Three extensions address the LiDAR domain. <strong>Sparse view augmentation</strong>
+          subsamples the global view and asks the student to match the teacher's dense view,
+          learning density-invariant features against LiDAR's quadratic range falloff. A
+          <strong>memory bank</strong> concatenates a FIFO queue of prototype scores before
+          Sinkhorn–Knopp, decoupling normalization from batch size and stabilizing training on
+          a 4-GPU budget. <strong>Cross-modal distillation</strong> backprojects
+          high-resolution 2D features — DINOv2 patches upsampled with LoftUp — onto each point,
+          guiding the student with fine-grained semantics that hold up at range.
         </p>
       </div>
     </section>
@@ -171,41 +186,92 @@
     <!-- ───────────────────────── Results ───────────────────────── -->
     <section id="results" class="section" aria-labelledby="results-h">
       <p class="eyebrow">Results</p>
-      <h2 id="results-h">Qualitative results</h2>
+      <h2 id="results-h">Linear-probing segmentation</h2>
       <div class="ramp-rule" role="presentation"></div>
 
-      <div class="carousel" aria-roledescription="carousel" aria-label="Qualitative result examples">
-        <button class="carousel-btn prev" type="button" aria-label="Previous slide">‹</button>
-        <ul class="carousel-track" tabindex="0" aria-label="Result slides, scrollable">
-          <li class="slide">
-            <img src="./static/images/teaser.svg" alt="Result example one: range-colored point cloud." width="1280" height="720" loading="lazy">
-            <p class="caption">Result 01 — replace with a qualitative still or clip + caption.</p>
-          </li>
-          <li class="slide">
-            <img src="./static/images/teaser.svg" alt="Result example two: range-colored point cloud." width="1280" height="720" loading="lazy">
-            <p class="caption">Result 02 — replace with a qualitative still or clip + caption.</p>
-          </li>
-          <li class="slide">
-            <img src="./static/images/teaser.svg" alt="Result example three: range-colored point cloud." width="1280" height="720" loading="lazy">
-            <p class="caption">Result 03 — replace with a qualitative still or clip + caption.</p>
-          </li>
-        </ul>
-        <button class="carousel-btn next" type="button" aria-label="Next slide">›</button>
+      <div class="prose">
+        <p>
+          We evaluate via linear probing for semantic segmentation. Against both the original
+          Sonata checkpoint (frozen, ScanNet-pretrained) and a Sonata variant self-supervised
+          finetuned on each target dataset, Vernata improves consistently across all metrics —
+          <strong>+5.9 mIoU (+12.1%)</strong> on TartanGround and
+          <strong>+7.3 mIoU (+14.7%)</strong> on Waymo over the finetuned baseline.
+        </p>
       </div>
 
-      <!-- Before / after comparison slider -->
-      <figure class="compare" aria-label="Before and after comparison">
-        <div class="compare-stage">
-          <img class="compare-after" src="./static/images/teaser.svg" alt="After: learned representation overlay." width="1280" height="720" loading="lazy">
-          <div class="compare-before-wrap" aria-hidden="true">
-            <img class="compare-before" src="./static/images/method.svg" alt="" width="1280" height="720" loading="lazy">
-          </div>
-          <span class="compare-handle" aria-hidden="true"></span>
+      <figure class="table-wrap">
+        <figcaption class="table-cap">
+          <span class="table-num">Table 1</span> Semantic segmentation via linear probing.
+          Best per column in <strong>bold</strong>.
+        </figcaption>
+        <div class="table-scroll">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th rowspan="2" scope="col">Method</th>
+                <th colspan="3" scope="colgroup">TartanGround</th>
+                <th colspan="3" scope="colgroup">Waymo</th>
+              </tr>
+              <tr>
+                <th scope="col">mIoU</th><th scope="col">mAcc</th><th scope="col">Acc</th>
+                <th scope="col">mIoU</th><th scope="col">mAcc</th><th scope="col">Acc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Sonata</th>
+                <td>48.7</td><td>60.6</td><td>83.6</td>
+                <td>43.7</td><td>58.7</td><td>85.7</td>
+              </tr>
+              <tr>
+                <th scope="row">Sonata (finetuned)</th>
+                <td>48.8</td><td>63.0</td><td>83.8</td>
+                <td>49.8</td><td>63.3</td><td>89.1</td>
+              </tr>
+              <tr class="row-ours">
+                <th scope="row">Vernata (ours)</th>
+                <td><strong>54.7</strong></td><td><strong>69.0</strong></td><td><strong>87.0</strong></td>
+                <td><strong>57.1</strong></td><td><strong>69.0</strong></td><td><strong>91.5</strong></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <input class="compare-range" type="range" min="0" max="100" value="50"
-               aria-label="Reveal slider: drag to compare before and after">
-        <figcaption class="caption">Drag to compare — replace both images with before/after states.</figcaption>
       </figure>
+
+      <figure class="table-wrap">
+        <figcaption class="table-cap">
+          <span class="table-num">Table 2</span> Ablation of contributions — sparse view (SP),
+          memory bank (MB), cross-modal distillation (CMD).
+        </figcaption>
+        <div class="table-scroll">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th scope="col">SP</th><th scope="col">MB</th><th scope="col">CMD</th>
+                <th scope="col">TG mIoU</th><th scope="col">TG mAcc</th>
+                <th scope="col">Waymo mIoU</th><th scope="col">Waymo mAcc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>–</td><td>–</td><td>–</td><td>48.8</td><td>63.0</td><td>49.8</td><td>63.3</td></tr>
+              <tr><td>✓</td><td>–</td><td>–</td><td>49.6</td><td>64.5</td><td>50.9</td><td>64.9</td></tr>
+              <tr><td>–</td><td>✓</td><td>–</td><td>50.8</td><td>65.8</td><td>51.0</td><td>65.1</td></tr>
+              <tr><td>✓</td><td>✓</td><td>–</td><td>51.6</td><td>66.2</td><td>51.8</td><td>65.8</td></tr>
+              <tr><td>–</td><td>–</td><td>✓</td><td>53.4</td><td>67.4</td><td>56.5</td><td><strong>69.5</strong></td></tr>
+              <tr class="row-ours">
+                <td>✓</td><td>✓</td><td>✓</td>
+                <td><strong>54.7</strong></td><td><strong>69.0</strong></td><td><strong>57.1</strong></td><td>69.0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </figure>
+
+      <p class="caption table-foot">
+        Not directly comparable to the figures cited in Sonata: we finetune from a ScanNet
+        checkpoint, use a 25&nbsp;m × 25&nbsp;m crop with a coarser inference grid, and omit
+        test-time augmentation.
+      </p>
     </section>
 
     <!-- ───────────────────────── Related links ───────────────────────── -->
@@ -215,9 +281,21 @@
       <div class="ramp-rule" role="presentation"></div>
       <div class="prose">
         <p>
-          There's a body of concurrent and related work this builds on.
-          <a href="#">DINO</a> introduced self-distillation with no labels.
-          Add the relevant LiDAR self-supervision and point-cloud representation papers here as a short prose list.
+          Vernata builds directly on
+          <a href="https://arxiv.org/abs/2503.16429">Sonata</a>, which addresses the
+          “geometric shortcut” in 3D self-supervision, and on the
+          <a href="https://arxiv.org/abs/2304.07193">DINOv2</a> self-distillation paradigm.
+          The point backbone is <a href="https://arxiv.org/abs/2312.10035">Point Transformer
+          V3</a>, and the 2D features are upsampled with
+          <a href="https://arxiv.org/abs/2504.14032">LoftUp</a>. Our memory-bank design adapts
+          <a href="https://arxiv.org/abs/2006.09882">SwAV</a>'s Sinkhorn–Knopp clustering, and
+          the cross-modal objective follows the
+          <a href="https://arxiv.org/abs/2310.17504">three-pillars (ScaLR)</a> line of work;
+          <a href="https://arxiv.org/abs/2510.23607">Concerto</a> is a concurrent 2D–3D
+          self-supervised approach in the indoor setting. We evaluate on
+          <a href="https://arxiv.org/abs/2602.18164">GrandTour</a>,
+          <a href="https://arxiv.org/abs/2505.10696">TartanGround</a>, and the
+          <a href="https://arxiv.org/abs/1912.04838">Waymo Open Dataset</a>.
         </p>
       </div>
     </section>
@@ -231,7 +309,7 @@
         <button class="copy-btn" type="button" data-copy-target="#bibtex-src">⧉ Copy</button>
 <pre id="bibtex-src">@inproceedings{lemke2026vernata,
   title     = {Vernata: Self-Supervised Learning of LiDAR Point Representations},
-  author    = {Lemke, Oliver and Two, Author and Three, Author and Four, Author},
+  author    = {Lemke, Oliver and Liniger, Alexander and Gawel, Abel and Hutter, Marco},
   booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
   year      = {2026},
   note      = {Under review}

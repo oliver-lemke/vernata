@@ -1,7 +1,7 @@
 /* ============================================================
    Vernata project page — main.js
-   No dependencies. Handles: active-nav, reveals, carousel,
-   compare slider, inline-video play/pause, copy-bibtex.
+   No dependencies. Handles: active-nav, reveals,
+   inline-video play/pause, copy-bibtex.
    ============================================================ */
 (function () {
   "use strict";
@@ -52,46 +52,6 @@
       { rootMargin: "0px 0px -10% 0px", threshold: 0.08 }
     );
     targets.forEach((t) => observer.observe(t));
-  })();
-
-  /* ---------- Results carousel: prev/next buttons ---------- */
-  (function carousel() {
-    document.querySelectorAll(".carousel").forEach((root) => {
-      const track = root.querySelector(".carousel-track");
-      const prev = root.querySelector(".carousel-btn.prev");
-      const next = root.querySelector(".carousel-btn.next");
-      if (!track) return;
-
-      const step = () => {
-        const slide = track.querySelector(".slide");
-        return slide ? slide.getBoundingClientRect().width + 16 : track.clientWidth;
-      };
-      if (prev) prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
-      if (next) next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
-
-      // Arrow-key nav when the track has focus
-      track.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowLeft") { e.preventDefault(); track.scrollBy({ left: -step(), behavior: "smooth" }); }
-        if (e.key === "ArrowRight") { e.preventDefault(); track.scrollBy({ left: step(), behavior: "smooth" }); }
-      });
-    });
-  })();
-
-  /* ---------- Before/after compare slider ---------- */
-  (function compare() {
-    document.querySelectorAll(".compare").forEach((root) => {
-      const range = root.querySelector(".compare-range");
-      const beforeWrap = root.querySelector(".compare-before-wrap");
-      const handle = root.querySelector(".compare-handle");
-      if (!range || !beforeWrap) return;
-
-      const apply = (v) => {
-        beforeWrap.style.width = v + "%";
-        if (handle) handle.style.left = v + "%";
-      };
-      range.addEventListener("input", () => apply(range.value));
-      apply(range.value);
-    });
   })();
 
   /* ---------- Inline videos: play/pause on visibility ---------- */

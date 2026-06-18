@@ -276,20 +276,18 @@ h1#paper-title {
 }
 .pill:active { transform: translateY(1px); }
 
-/* Hero media */
+/* Hero media — figure uses its natural aspect ratio, capped width */
 .hero-media {
   margin: 0 auto;
-  max-width: 100%;
+  max-width: min(100%, 760px);
 }
 .hero-media img,
 .hero-media-video {
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
   border-radius: 14px;
   box-shadow: var(--shadow);
-  background: #0C1320;
+  background: var(--card);
 }
 .caption {
   font-family: var(--font-mono);
@@ -360,113 +358,57 @@ h1#paper-title {
   padding: clamp(0.75rem, 3vw, 1.5rem);
 }
 
-/* ---------- Results carousel ---------- */
-.carousel {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+/* ---------- Results tables ---------- */
+.table-wrap { margin: 1.75rem 0 0; }
+.table-cap {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--mist);
+  margin: 0 0 0.6rem;
+  line-height: 1.5;
 }
-.carousel-track {
-  list-style: none;
-  margin: 0;
-  padding: 0.5rem 0;
-  display: flex;
-  gap: 1rem;
+.table-num { color: var(--depth-mid); margin-right: 0.4rem; }
+.table-foot { margin-top: 1rem; }
+
+.table-scroll {
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  flex: 1 1 auto;
-  min-width: 0;
-}
-.carousel-track::-webkit-scrollbar { display: none; }
-.slide {
-  flex: 0 0 100%;
-  scroll-snap-align: center;
-}
-.slide img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  background: #0C1320;
-}
-.carousel-btn {
-  flex: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
   border: 1px solid var(--line);
-  background: var(--card);
-  color: var(--ink);
-  font-size: 1.5rem;
-  line-height: 1;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
-.carousel-btn:hover { border-color: var(--depth-mid); color: var(--depth-mid); }
-
-@media (max-width: 640px) {
-  .carousel-btn { display: none; } /* swipe on touch */
-}
-
-/* ---------- Before/after compare slider ---------- */
-.compare { margin: 2rem 0 0; }
-.compare-stage {
-  position: relative;
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  aspect-ratio: 16 / 9;
-  background: #0C1320;
+  background: var(--card);
+  -webkit-overflow-scrolling: touch;
 }
-.compare-stage img {
-  position: absolute;
-  inset: 0;
+.results-table {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  white-space: nowrap;
 }
-.compare-before-wrap {
-  position: absolute;
-  inset: 0;
-  width: 50%;
-  overflow: hidden;
-  border-right: 2px solid var(--paper);
+.results-table th,
+.results-table td {
+  padding: 0.6rem 0.9rem;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
 }
-.compare-before-wrap img { width: auto; min-width: 100%; }
-.compare-handle {
-  position: absolute;
-  top: 0; bottom: 0;
-  left: 50%;
-  width: 2px;
-  background: var(--paper);
-  transform: translateX(-1px);
-  pointer-events: none;
+.results-table thead th {
+  color: var(--mist);
+  font-weight: 500;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
 }
-.compare-handle::after {
-  content: "⇄";
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 34px; height: 34px;
-  display: grid; place-items: center;
-  background: var(--depth-mid);
-  color: #fff;
-  border-radius: 999px;
-  font-size: 0.9rem;
+.results-table thead tr:first-child th { text-align: center; }
+.results-table th[scope="row"],
+.results-table thead th[rowspan] {
+  text-align: left;
+  color: var(--ink);
 }
-.compare-range {
-  width: 100%;
-  margin-top: 0.75rem;
-  accent-color: var(--depth-mid);
+.results-table tbody tr:last-child td,
+.results-table tbody tr:last-child th { border-bottom: 0; }
+.results-table .row-ours {
+  background: color-mix(in srgb, var(--depth-mid) 9%, transparent);
 }
+.results-table .row-ours th[scope="row"] { color: var(--depth-mid); }
+.results-table strong { color: var(--ink); font-weight: 700; }
 
 /* ---------- BibTeX ---------- */
 .bibtex {
