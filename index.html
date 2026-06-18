@@ -183,8 +183,9 @@
     <!-- ───────────────────────── Results ───────────────────────── -->
     <section id="results" class="section" aria-labelledby="results-h">
       <p class="eyebrow">Results</p>
-      <h2 id="results-h">Results</h2>
       <div class="ramp-rule" role="presentation"></div>
+
+      <h2 class="res-head" id="results-h">Qualitative</h2>
 
       <!-- Qualitative: before/after compare slider (Sonata vs Ours) -->
       <figure class="compare" aria-label="Comparison of Sonata and Vernata PCA features">
@@ -202,16 +203,13 @@
                aria-label="Reveal slider: drag to compare Sonata, finetuned (left) with Vernata (right)">
         <figcaption class="caption">
           <strong>Visualization of PCA Features in LiDAR Scenes.</strong> Drag to compare
-          Sonata finetuned (left) against our approach (right). We visualize the principal
-          components of point representations produced by Sonata finetuned on LiDAR datasets, as
-          well as our approach. Sonata struggles with separation between distinct semantic
-          classes, as well as consistency across the inherent density variations of LiDAR point
-          clouds. Our method integrates cross-modal distillation and a sparse-to-dense objective
-          to overcome these limitations, demonstrating sharper semantic distinction, better
-          consistency within object classes, and more robust coherence across planar surfaces
-          like roads, irrespective of the distance to the sensor.
+          Sonata finetuned (left) against our approach (right). Vernata shows sharper separation
+          between semantic classes and more consistent colors across the scan's range-dependent
+          density.
         </figcaption>
       </figure>
+
+      <h2 class="res-head">Quantitative</h2>
 
       <div class="prose">
         <p>
@@ -228,7 +226,7 @@
           <span class="table-num">Table 1</span> <strong>Semantic Segmentation via Linear
           Probing.</strong> We evaluate Vernata against the original Sonata baseline (pretrained
           on ScanNet) and a domain-adapted version of Sonata (self-supervised finetuned on the
-          respective LiDAR datasets). Performance is reported using mIoU, mAcc, and Acc. By
+          respective LiDAR datasets). By
           addressing LiDAR sparsity and modality gaps, our approach consistently outperforms
           both baselines.
         </figcaption>
@@ -299,9 +297,9 @@
       </figure>
 
       <p class="caption table-foot">
-        Not directly comparable to the figures cited in Sonata: we finetune from a ScanNet
-        checkpoint, use a 25&nbsp;m × 25&nbsp;m crop with a coarser inference grid, and omit
-        test-time augmentation.
+        <span class="foot-mark">*</span> Not directly comparable to the figures cited in Sonata:
+        we finetune from a ScanNet checkpoint, use a 25&nbsp;m × 25&nbsp;m crop with a coarser
+        inference grid, and omit test-time augmentation.
       </p>
     </section>
 
