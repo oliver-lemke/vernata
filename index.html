@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vernata — Self-Supervised Learning of LiDAR Point Representations</title>
-  <meta name="description" content="Vernata: DINO-style self-supervised representation learning for outdoor LiDAR point clouds. IROS 2026 submission.">
+  <meta name="description" content="Vernata: self-supervised representation learning for outdoor LiDAR point clouds. Published at IROS 2026.">
   <link rel="canonical" href="https://oliver-lemke.github.io/vernata/">
 
   <!-- Social preview -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Vernata — Self-Supervised Learning of LiDAR Point Representations">
-  <meta property="og:description" content="DINO-style self-supervised representation learning for outdoor LiDAR point clouds. IROS 2026 submission.">
+  <meta property="og:description" content="Self-supervised representation learning for outdoor LiDAR point clouds. Published at IROS 2026.">
   <meta property="og:url" content="https://oliver-lemke.github.io/vernata/">
   <meta property="og:image" content="https://oliver-lemke.github.io/vernata/static/images/teaser.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -60,15 +60,12 @@
       <p class="affils">
         <span><sup>1</sup>Robotics and AI Institute</span>
         <span><sup>2</sup>ETH Zürich</span>
-        <span class="venue-chip">IROS 2026 · under review</span>
+        <span class="venue-chip">IROS 2026</span>
       </p>
 
       <nav class="cta-row" aria-label="Paper resources">
         <a class="pill" href="#" aria-label="Read the paper on arXiv">
           <span aria-hidden="true">📄</span> arXiv
-        </a>
-        <a class="pill" href="./static/pdf/paper.pdf">
-          <span aria-hidden="true">⬇</span> PDF
         </a>
         <a class="pill" href="https://github.com/oliver-lemke/vernata">
           <span aria-hidden="true">⌥</span> Code
@@ -80,16 +77,6 @@
           <span aria-hidden="true">⛁</span> Data
         </a>
       </nav>
-
-      <figure class="hero-media">
-        <img src="./static/images/teaser.jpg"
-             alt="PCA visualization of learned point features on GrandTour and TartanGround LiDAR scenes. Top: RGB reference. Middle: finetuned Sonata, with smeared, range-dependent features. Bottom: Vernata (ours), with sharper semantic separation and consistent features across the scan's density variations."
-             width="1600" height="1571" loading="lazy">
-        <figcaption class="caption">
-          PCA of learned point features. Sonata (middle) smears across classes and drifts with
-          range; Vernata (bottom) keeps semantics distinct and consistent across density.
-        </figcaption>
-      </figure>
 
       <p class="tagline">
         A multi-modal, multi-teacher self-supervised framework that learns robust point
@@ -138,9 +125,8 @@
       <h2 id="video-h">Overview</h2>
       <div class="ramp-rule" role="presentation"></div>
       <div class="video-embed">
-        <!-- Replace VIDEO_ID with the YouTube id, or swap for a self-hosted <video>. -->
         <iframe
-          src="https://www.youtube-nocookie.com/embed/VIDEO_ID"
+          src="https://www.youtube-nocookie.com/embed/Kk2nPMn6HvQ"
           title="Vernata overview video"
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -158,9 +144,15 @@
              alt="Vernata framework overview. Two teachers process global views of the scene: a 3D teacher (top) using a PTv3 encoder updated by EMA, and a frozen 2D teacher (bottom) producing DINOv2 features upsampled with LoftUp and backprojected into the point cloud. The student receives masked, local, and sparse-subsampled views; it is aligned to the 3D teacher via cross-entropy loss and to the 2D teacher via cosine similarity. The base Sonata framework is highlighted in gray."
              width="1800" height="1336" loading="lazy">
         <figcaption class="caption">
-          Two teachers anchor the model: an EMA-updated 3D teacher (PTv3) and a frozen 2D
-          teacher (DINOv2 + LoftUp). The student aligns to the 3D teacher via cross-entropy and
-          to the 2D teacher via cosine similarity. Base Sonata framework shown in gray.
+          <strong>Overview of the Framework.</strong> We present a multi-modal multi-teacher
+          distillation architecture for self-supervised point cloud learning. Building upon the
+          Sonata framework, highlighted in gray, our model is anchored by two teachers
+          processing global views of the scene: A 3D teacher (top), employing a PTv3 encoder
+          and updated via EMA, and a frozen 2D teacher (bottom), producing DINOv2-S features,
+          which are upsampled with LoftUp and backprojected into the point cloud. In contrast,
+          the student receives three variations of the global view: masked views, local crops,
+          and sparse subsampled views. The student embeddings are aligned with the 3D teacher
+          via cross-entropy loss and with the 2D teacher via cosine similarity.
         </figcaption>
       </figure>
       <div class="prose">
@@ -186,8 +178,35 @@
     <!-- ───────────────────────── Results ───────────────────────── -->
     <section id="results" class="section" aria-labelledby="results-h">
       <p class="eyebrow">Results</p>
-      <h2 id="results-h">Linear-probing segmentation</h2>
+      <h2 id="results-h">Results</h2>
       <div class="ramp-rule" role="presentation"></div>
+
+      <!-- Qualitative: before/after compare slider (Sonata vs Ours) -->
+      <figure class="compare" aria-label="Comparison of Sonata and Vernata PCA features">
+        <div class="compare-stage">
+          <img class="compare-after" src="./static/images/ours-row.jpg"
+               alt="Vernata (ours): PCA of point features on GrandTour and TartanGround scenes, with sharp separation between classes and colors that stay consistent across the scan's range-dependent density."
+               width="1600" height="487" loading="lazy">
+          <div class="compare-before-wrap" aria-hidden="true">
+            <img class="compare-before" src="./static/images/sonata-row.jpg" alt=""
+                 width="1600" height="487" loading="lazy">
+          </div>
+          <span class="compare-handle" aria-hidden="true"></span>
+        </div>
+        <input class="compare-range" type="range" min="0" max="100" value="50"
+               aria-label="Reveal slider: drag to compare Sonata, finetuned (left) with Vernata (right)">
+        <figcaption class="caption">
+          <strong>Visualization of PCA Features in LiDAR Scenes.</strong> Drag to compare —
+          Sonata finetuned (left) against our approach (right). We visualize the principal
+          components of point representations produced by Sonata finetuned on LiDAR datasets, as
+          well as our approach. Sonata struggles with separation between distinct semantic
+          classes, as well as consistency across the inherent density variations of LiDAR point
+          clouds. Our method integrates cross-modal distillation and a sparse-to-dense objective
+          to overcome these limitations, demonstrating sharper semantic distinction, better
+          consistency within object classes, and more robust coherence across planar surfaces
+          like roads, irrespective of the distance to the sensor.
+        </figcaption>
+      </figure>
 
       <div class="prose">
         <p>
@@ -201,8 +220,12 @@
 
       <figure class="table-wrap">
         <figcaption class="table-cap">
-          <span class="table-num">Table 1</span> Semantic segmentation via linear probing.
-          Best per column in <strong>bold</strong>.
+          <span class="table-num">Table 1</span> <strong>Semantic Segmentation via Linear
+          Probing.</strong> We evaluate Vernata against the original Sonata baseline (pretrained
+          on ScanNet) and a domain-adapted version of Sonata (self-supervised finetuned on the
+          respective LiDAR datasets). Performance is reported using mIoU, mAcc, and Acc. By
+          addressing LiDAR sparsity and modality gaps, our approach consistently outperforms
+          both baselines.
         </figcaption>
         <div class="table-scroll">
           <table class="results-table">
@@ -240,8 +263,11 @@
 
       <figure class="table-wrap">
         <figcaption class="table-cap">
-          <span class="table-num">Table 2</span> Ablation of contributions — sparse view (SP),
-          memory bank (MB), cross-modal distillation (CMD).
+          <span class="table-num">Table 2</span> <strong>Ablation of Contributions.</strong> We
+          ablate the Sparse View (SP), Sinkhorn-Knopp Memory Bank (MB), and Cross-Modal
+          Distillation (CMD) extensions. Across both datasets, we observe moderate gains using
+          SP and MB, while the largest gains stem from CMD. Combining all extensions yields the
+          best mIoU across both datasets.
         </figcaption>
         <div class="table-scroll">
           <table class="results-table">
@@ -311,8 +337,7 @@
   title     = {Vernata: Self-Supervised Learning of LiDAR Point Representations},
   author    = {Lemke, Oliver and Liniger, Alexander and Gawel, Abel and Hutter, Marco},
   booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
-  year      = {2026},
-  note      = {Under review}
+  year      = {2026}
 }</pre>
       </div>
     </section>
@@ -331,7 +356,7 @@
         <a href="https://nerfies.github.io/">Nerfies</a> project-page lineage, rebuilt with modern CSS.
       </p>
       <p class="footer-links">
-        <a href="#">arXiv</a> · <a href="./static/pdf/paper.pdf">PDF</a> ·
+        <a href="#">arXiv</a> ·
         <a href="https://github.com/oliver-lemke/vernata">Code</a> · <a href="#video">Video</a>
       </p>
     </div>

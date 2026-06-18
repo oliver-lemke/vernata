@@ -1,6 +1,6 @@
 /* ============================================================
    Vernata project page — style.css
-   Light by default, full dark mode. Signature = LiDAR depth ramp.
+   Light theme only. Signature = LiDAR depth ramp.
    ============================================================ */
 
 /* ---------- Design tokens ---------- */
@@ -35,24 +35,13 @@
   --wrap: 960px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ink:   #E8EDF2;
-    --paper: #0C1320;
-    --mist:  #8A99A8;
-    --line:  #1E2A3A;
-    --card:  #121C2C;
-    --paper-translucent: rgba(12, 19, 32, 0.74);
-    --shadow: 0 12px 34px -14px rgba(0, 0, 0, 0.6);
-  }
-}
-
 /* ---------- Reset / base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  color-scheme: light;
 }
 
 body {
@@ -339,10 +328,13 @@ h1#paper-title {
   box-shadow: var(--shadow);
   background: #0C1320;
 }
-.video-embed iframe {
+.video-embed iframe,
+.video-embed video {
   width: 100%;
   height: 100%;
   border: 0;
+  object-fit: contain;
+  background: #000;
 }
 
 /* ---------- Method figure ---------- */
@@ -409,6 +401,58 @@ h1#paper-title {
 }
 .results-table .row-ours th[scope="row"] { color: var(--depth-mid); }
 .results-table strong { color: var(--ink); font-weight: 700; }
+
+/* ---------- Before/after compare slider ---------- */
+.compare { margin: 0 0 2rem; }
+.compare-stage {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  aspect-ratio: 1600 / 487;
+  background: var(--card);
+}
+.compare-stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* clip the "before" image by inset so it stays pixel-aligned with the "after" */
+.compare-before-wrap {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 50% 0 0);
+}
+.compare-handle {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: var(--paper);
+  transform: translateX(-1px);
+  pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(16, 25, 42, 0.15);
+}
+.compare-handle::after {
+  content: "⇄";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  background: var(--depth-mid);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+.compare-range {
+  width: 100%;
+  margin-top: 0.75rem;
+  accent-color: var(--depth-mid);
+  min-height: 24px;
+}
 
 /* ---------- BibTeX ---------- */
 .bibtex {

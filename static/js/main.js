@@ -1,6 +1,6 @@
 /* ============================================================
    Vernata project page — main.js
-   No dependencies. Handles: active-nav, reveals,
+   No dependencies. Handles: active-nav, reveals, compare slider,
    inline-video play/pause, copy-bibtex.
    ============================================================ */
 (function () {
@@ -52,6 +52,23 @@
       { rootMargin: "0px 0px -10% 0px", threshold: 0.08 }
     );
     targets.forEach((t) => observer.observe(t));
+  })();
+
+  /* ---------- Before/after compare slider ---------- */
+  (function compare() {
+    document.querySelectorAll(".compare").forEach((root) => {
+      const range = root.querySelector(".compare-range");
+      const beforeWrap = root.querySelector(".compare-before-wrap");
+      const handle = root.querySelector(".compare-handle");
+      if (!range || !beforeWrap) return;
+
+      const apply = (v) => {
+        beforeWrap.style.clipPath = "inset(0 " + (100 - v) + "% 0 0)";
+        if (handle) handle.style.left = v + "%";
+      };
+      range.addEventListener("input", () => apply(range.value));
+      apply(range.value);
+    });
   })();
 
   /* ---------- Inline videos: play/pause on visibility ---------- */

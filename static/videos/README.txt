@@ -1,1 +1,3 @@
-Drop teaser.mp4 and result clips here (H.264 MP4, with a poster image in ../images/).
+Drop your overview video here as overview.mp4 (H.264 MP4).
+The Video section references ./static/videos/overview.mp4.
+Optional: add a poster at ../images/video-poster.jpg and point the <video poster="..."> at it.
