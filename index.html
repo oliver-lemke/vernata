@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vernata — Self-Supervised Learning of LiDAR Point Representations</title>
+  <meta name="description" content="Vernata: DINO-style self-supervised representation learning for outdoor LiDAR point clouds. IROS 2026 submission.">
+  <link rel="canonical" href="https://oliver-lemke.github.io/vernata/">
+
+  <!-- Social preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Vernata — Self-Supervised Learning of LiDAR Point Representations">
+  <meta property="og:description" content="DINO-style self-supervised representation learning for outdoor LiDAR point clouds. IROS 2026 submission.">
+  <meta property="og:url" content="https://oliver-lemke.github.io/vernata/">
+  <meta property="og:image" content="https://oliver-lemke.github.io/vernata/static/images/teaser.svg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/style.css">
+  <script src="./static/js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#abstract">Skip to content</a>
+
+  <!-- ───────────────────────── Header ───────────────────────── -->
+  <header class="site-header" id="top">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top">Vernata</a>
+      <nav class="nav" aria-label="Section navigation">
+        <ul class="nav-list">
+          <li><a href="#abstract">Abstract</a></li>
+          <li><a href="#video">Video</a></li>
+          <li><a href="#method">Method</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#links">Links</a></li>
+          <li><a href="#bibtex">BibTeX</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ───────────────────────── Hero ───────────────────────── -->
+    <section class="hero" aria-labelledby="paper-title">
+      <p class="eyebrow">Self-supervised LiDAR representation learning</p>
+      <h1 id="paper-title">Vernata: Self-Supervised Learning of LiDAR Point Representations</h1>
+      <div class="ramp-rule" role="presentation"></div>
+
+      <p class="authors">
+        <a href="#">Oliver Lemke</a><sup>1</sup>,
+        <a href="#">Author Two</a><sup>1</sup>,
+        <a href="#">Author Three</a><sup>2</sup>,
+        <a href="#">Author Four</a><sup>1</sup>
+      </p>
+      <p class="affils">
+        <span><sup>1</sup>ETH Zürich</span>
+        <span><sup>2</sup>Affiliation Two</span>
+        <span class="venue-chip">IROS 2026 · under review</span>
+      </p>
+
+      <nav class="cta-row" aria-label="Paper resources">
+        <a class="pill" href="#" aria-label="Read the paper on arXiv">
+          <span aria-hidden="true">📄</span> arXiv
+        </a>
+        <a class="pill" href="./static/pdf/paper.pdf">
+          <span aria-hidden="true">⬇</span> PDF
+        </a>
+        <a class="pill" href="https://github.com/oliver-lemke/vernata">
+          <span aria-hidden="true">⌥</span> Code
+        </a>
+        <a class="pill" href="#video">
+          <span aria-hidden="true">▶</span> Video
+        </a>
+        <a class="pill" href="#">
+          <span aria-hidden="true">⛁</span> Data
+        </a>
+      </nav>
+
+      <figure class="hero-media">
+        <img src="./static/images/teaser.svg"
+             alt="Range-colored LiDAR point cloud of an outdoor scene, scanned in concentric rings outward from a central sensor; nearby points are amber, mid-range teal, and far points indigo."
+             width="1280" height="720" loading="lazy">
+        <!-- Swap in a looping clip when available:
+        <video class="hero-media-video" autoplay muted playsinline loop preload="none"
+               poster="./static/images/teaser.svg" width="1280" height="720">
+          <source src="./static/videos/teaser.mp4" type="video/mp4">
+        </video>
+        -->
+        <figcaption class="caption">
+          Vernata learns point representations directly from raw outdoor LiDAR — colored here by range.
+        </figcaption>
+      </figure>
+
+      <p class="tagline">
+        A DINO-style student–teacher objective that learns transferable point features from
+        unlabeled outdoor LiDAR, with no manual annotation.
+      </p>
+    </section>
+
+    <!-- ───────────────────────── Abstract ───────────────────────── -->
+    <section id="abstract" class="section" aria-labelledby="abstract-h">
+      <p class="eyebrow">Abstract</p>
+      <h2 id="abstract-h">Learning from raw scans</h2>
+      <div class="ramp-rule" role="presentation"></div>
+      <div class="prose">
+        <p>
+          <em>Placeholder abstract.</em> Outdoor LiDAR perception still leans heavily on
+          large labeled datasets, which are costly to collect and annotate. Vernata adapts
+          self-distillation with no labels (DINO) to sparse, range-varying point clouds,
+          producing point-level representations that transfer across downstream tasks.
+        </p>
+        <p>
+          We pair a student and a momentum teacher over two augmented views of the same scan,
+          and train the student to match the teacher's distribution. The resulting features
+          improve label efficiency on semantic segmentation and detection, and remain robust
+          across sensors and scenes. Replace this text with the final abstract.
+        </p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Video ───────────────────────── -->
+    <section id="video" class="section" aria-labelledby="video-h">
+      <p class="eyebrow">Video</p>
+      <h2 id="video-h">Overview</h2>
+      <div class="ramp-rule" role="presentation"></div>
+      <div class="video-embed">
+        <!-- Replace VIDEO_ID with the YouTube id, or swap for a self-hosted <video>. -->
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/VIDEO_ID"
+          title="Vernata overview video"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Method ───────────────────────── -->
+    <section id="method" class="section" aria-labelledby="method-h">
+      <p class="eyebrow">Method</p>
+      <h2 id="method-h">A student–teacher objective for LiDAR</h2>
+      <div class="ramp-rule" role="presentation"></div>
+      <figure class="method-figure">
+        <img src="./static/images/method.svg"
+             alt="Vernata pipeline: a LiDAR scan is split into two augmented views; a student network and an EMA-updated teacher each encode one view and produce a softmax distribution; the student is trained with a cross-entropy self-distillation loss while the teacher branch uses centering and stop-gradient."
+             width="1100" height="460" loading="lazy">
+        <figcaption class="caption">
+          Two augmented views of a scan feed a student and a momentum teacher; the student is
+          distilled toward the teacher's centered output. Replace with the final figure.
+        </figcaption>
+      </figure>
+      <div class="prose">
+        <p>
+          <em>Placeholder method text.</em> Given a single LiDAR sweep, we sample two augmented
+          views via geometric and point-dropout transforms. The student encoder is trained by
+          gradient descent; the teacher is an exponential moving average of the student, with a
+          stop-gradient and output centering to prevent collapse.
+        </p>
+        <p>
+          The objective is a cross-entropy between the student and teacher distributions over a
+          learned prototype set. Describe the encoder backbone, augmentation policy, and any
+          LiDAR-specific design choices here.
+        </p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Results ───────────────────────── -->
+    <section id="results" class="section" aria-labelledby="results-h">
+      <p class="eyebrow">Results</p>
+      <h2 id="results-h">Qualitative results</h2>
+      <div class="ramp-rule" role="presentation"></div>
+
+      <div class="carousel" aria-roledescription="carousel" aria-label="Qualitative result examples">
+        <button class="carousel-btn prev" type="button" aria-label="Previous slide">‹</button>
+        <ul class="carousel-track" tabindex="0" aria-label="Result slides, scrollable">
+          <li class="slide">
+            <img src="./static/images/teaser.svg" alt="Result example one: range-colored point cloud." width="1280" height="720" loading="lazy">
+            <p class="caption">Result 01 — replace with a qualitative still or clip + caption.</p>
+          </li>
+          <li class="slide">
+            <img src="./static/images/teaser.svg" alt="Result example two: range-colored point cloud." width="1280" height="720" loading="lazy">
+            <p class="caption">Result 02 — replace with a qualitative still or clip + caption.</p>
+          </li>
+          <li class="slide">
+            <img src="./static/images/teaser.svg" alt="Result example three: range-colored point cloud." width="1280" height="720" loading="lazy">
+            <p class="caption">Result 03 — replace with a qualitative still or clip + caption.</p>
+          </li>
+        </ul>
+        <button class="carousel-btn next" type="button" aria-label="Next slide">›</button>
+      </div>
+
+      <!-- Before / after comparison slider -->
+      <figure class="compare" aria-label="Before and after comparison">
+        <div class="compare-stage">
+          <img class="compare-after" src="./static/images/teaser.svg" alt="After: learned representation overlay." width="1280" height="720" loading="lazy">
+          <div class="compare-before-wrap" aria-hidden="true">
+            <img class="compare-before" src="./static/images/method.svg" alt="" width="1280" height="720" loading="lazy">
+          </div>
+          <span class="compare-handle" aria-hidden="true"></span>
+        </div>
+        <input class="compare-range" type="range" min="0" max="100" value="50"
+               aria-label="Reveal slider: drag to compare before and after">
+        <figcaption class="caption">Drag to compare — replace both images with before/after states.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ───────────────────────── Related links ───────────────────────── -->
+    <section id="links" class="section" aria-labelledby="links-h">
+      <p class="eyebrow">Related links</p>
+      <h2 id="links-h">Related work</h2>
+      <div class="ramp-rule" role="presentation"></div>
+      <div class="prose">
+        <p>
+          There's a body of concurrent and related work this builds on.
+          <a href="#">DINO</a> introduced self-distillation with no labels.
+          Add the relevant LiDAR self-supervision and point-cloud representation papers here as a short prose list.
+        </p>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── BibTeX ───────────────────────── -->
+    <section id="bibtex" class="section" aria-labelledby="bibtex-h">
+      <p class="eyebrow">BibTeX</p>
+      <h2 id="bibtex-h">Citation</h2>
+      <div class="ramp-rule" role="presentation"></div>
+      <div class="bibtex">
+        <button class="copy-btn" type="button" data-copy-target="#bibtex-src">⧉ Copy</button>
+<pre id="bibtex-src">@inproceedings{lemke2026vernata,
+  title     = {Vernata: Self-Supervised Learning of LiDAR Point Representations},
+  author    = {Lemke, Oliver and Two, Author and Three, Author and Four, Author},
+  booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  year      = {2026},
+  note      = {Under review}
+}</pre>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ───────────────────────── Footer ───────────────────────── -->
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>
+        © 2026 Oliver Lemke. Content licensed
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+      </p>
+      <p class="footer-credit">
+        Page layout follows the
+        <a href="https://nerfies.github.io/">Nerfies</a> project-page lineage, rebuilt with modern CSS.
+      </p>
+      <p class="footer-links">
+        <a href="#">arXiv</a> · <a href="./static/pdf/paper.pdf">PDF</a> ·
+        <a href="https://github.com/oliver-lemke/vernata">Code</a> · <a href="#video">Video</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
